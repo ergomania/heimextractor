@@ -1,6 +1,7 @@
 import sys
 import re
 import csv
+from datetime import datetime
 import PyPDF2
 
 # Get the PDF file name from the command-line arguments
@@ -59,7 +60,8 @@ try:
 
     print('Found {} positions'.format(len(positions)))
 
-    with open('positions.csv', 'w', newline='', encoding='utf-8') as csvfile:
+    now = datetime.now()
+    with open('{}_heim_extraction.csv'.format(now.strftime("%Y%m%d")), 'w', newline='', encoding='utf-8') as csvfile:
         writer = csv.writer(csvfile)
         for position in positions:
             writer.writerow(position)
