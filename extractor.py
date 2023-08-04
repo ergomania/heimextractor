@@ -16,7 +16,7 @@ def main():
 
     # Loop through each PDF file
     for pdf_file_name in pdf_file_names:
-        extract_positions_from_file(pdf_file_name, positions)
+        extract_positions_from_file(pdf_file_name)
 
     # Write to csv file
     write_to_csv()
@@ -35,6 +35,9 @@ def extract_positions_from_file(pdf_file_name):
 
             # Loop through each line and extract the position
             for line in lines:
+                if len(line) == 0:
+                    continue
+
                 positions_in_file.append(extract_positions_from_line(line))
 
             print('Found {} positions'.format(len(positions_in_file)))
@@ -63,12 +66,13 @@ def read_lines_from_file(filename):
         page_text = page_obj.extract_text()
 
         # Print the text
-        lines.append(page_text.split('\n'))
+        lines += page_text.split('\n')
 
     return lines
 
 
 def extract_positions_from_line(line):
+    print('Extracting from line {}'.format(line))
     matches = re.search(r'^([0-9]*) ([0-9]*) (.*(?= Stk)) Stk ([^ ]*)', line, re.MULTILINE)
     if not matches:
         return []
